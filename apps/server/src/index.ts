@@ -1,20 +1,35 @@
-import express from 'express';
+import "dotenv/config";
+import express from "express";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "../lib/auth";
 import cors from 'cors';
-import { SHARED_MESSAGE } from '@repo/shared';
+import { requireAuth } from "./middleware/auth.middleware";
+import { createFamily } from "./controllers/family.controller";
+import { getMyFamily } from "./controllers/user.controller";
+import { getFamilyTasks, createTask } from "./controllers/task.controller";
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const port = process.env.PORT || 4000;
 
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
+// app.all("/api/auth/*", toNodeHandler(auth)); // For ExpressJS v4
+app.all("/api/auth/*splat", toNodeHandler(auth));
+
+// Mount express json middleware after Better Auth handler
+// or only apply it to routes that don't interact with Better Auth
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json({
-        message: 'API funcionando correctamente',
-        shared: SHARED_MESSAGE
-    });
-});
+app.post("/api/families", requireAuth, createFamily);
+app.get("/api/user/family", requireAuth, getMyFamily);
+app.get("/api/tasks", requireAuth, getFamilyTasks);
+app.post("/api/tasks", requireAuth, createTask);
 
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
 });

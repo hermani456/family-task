@@ -1,35 +1,100 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { CreateFamily } from "./components/CreateFamily";
+import { Dashboard } from "./components/Dashboard";
+import { useMyFamily } from "./hooks/useMyFamily";
+import { useState } from "react";
+import { signUp, useSession, signOut } from "./lib/auth-client";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const session = useSession();
+
+  const handleRegister = async () => {
+    await signUp.email(
+      {
+        email,
+        password,
+        name,
+      },
+      {
+        onRequest: () => alert("Enviando petición..."),
+        onSuccess: () => alert("¡Usuario creado y logueado!"),
+        onError: (ctx) => alert(ctx.error.message),
+      }
+    );
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    window.location.reload();
+  };
+
+  const familyQuery = useMyFamily();
+
+  if (session.isPending) return <div className="p-10">Cargando...</div>;
+
+  if (session.data) {
+    if (familyQuery.isLoading)
+      return <div className="p-10">Buscando tu hogar...</div>;
+
+    if (familyQuery.data?.family) {
+      return <Dashboard />;
+    }
+
+    return (
+      <div className="min-h-screen bg-gray-50 p-4">
+        <header className="flex justify-between items-center max-w-4xl mx-auto mb-8">
+          <h1 className="font-bold text-xl">
+            Bienvenido, {session.data.user.name}
+          </h1>
+          <button
+            onClick={handleLogout}
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+          >
+            Cerrar Sesión
+          </button>
+        </header>
+        <CreateFamily />
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="p-10 flex flex-col gap-4 max-w-md mx-auto font-sans">
+      <h1 className="text-2xl font-bold">FamilyTask Login</h1>
+      <div className="p-10 flex flex-col gap-4 max-w-md mx-auto font-sans">
+        // <h1 className="text-2xl font-bold">Registro de Familia (Test)</h1>
+        //{" "}
+        <input
+          className="border p-2 rounded"
+          placeholder="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          className="border p-2 rounded"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          className="border p-2 rounded"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          className="bg-black text-white p-2 rounded hover:bg-gray-800 transition"
+          onClick={handleRegister}
+        >
+          Registrarse
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
