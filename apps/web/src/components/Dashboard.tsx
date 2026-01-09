@@ -2,6 +2,7 @@ import { useMyFamily } from "../hooks/useMyFamily";
 import { signOut } from "../lib/auth-client";
 import { RewardsList } from "./RewardsList";
 import { TaskList } from "./TaskList";
+import { ActivityFeed } from "./ActivityFeed";
 
 export const Dashboard = () => {
   const { data, isLoading } = useMyFamily();
@@ -85,12 +86,30 @@ export const Dashboard = () => {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl border shadow-sm col-span-2 h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
             <TaskList userRole={role} userId={data.family.memberId} />
           </div>
           <div className="bg-white p-6 rounded-xl border shadow-sm h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
             <RewardsList userRole={role} userBalance={balance} />
+          </div>
+        </div> */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
+          {/* COLUMNA 1: TAREAS (Ocupa más espacio en móvil, o igual en desktop) */}
+          <div className="md:col-span-1 bg-white p-6 rounded-xl border shadow-sm h-[500px] flex flex-col">
+            <h2 className="text-xl font-bold mb-4">📝 Tareas</h2>
+            <TaskList userRole={role} userId={data.family.memberId} />
+          </div>
+
+          {/* COLUMNA 2: PREMIOS */}
+          <div className="bg-white p-6 rounded-xl border shadow-sm h-[500px] flex flex-col">
+            <h2 className="text-xl font-bold mb-4">🎁 Premios</h2>
+            <RewardsList userRole={role} userBalance={balance} />
+          </div>
+
+          {/* COLUMNA 3: HISTORIAL (NUEVA) */}
+          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 h-[500px] flex flex-col">
+            <ActivityFeed />
           </div>
         </div>
       </main>

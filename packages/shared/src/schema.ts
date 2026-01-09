@@ -140,3 +140,15 @@ export const reward = pgTable("reward", {
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const transaction = pgTable("transaction", {
+  id: text("id").primaryKey(),
+  familyId: text("family_id").notNull().references(() => family.id, { onDelete: 'cascade' }),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: 'cascade' }),
+
+  amount: integer("amount").notNull(),
+  description: text("description").notNull(),
+  type: text("type").notNull(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});

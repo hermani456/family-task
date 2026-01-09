@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import { task, member, user } from "@family-task/shared"
+import { task, member, user, transaction } from "@family-task/shared"
 import { eq, and, desc, sql, or, isNull } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
@@ -128,13 +128,27 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
         // --- LÓGICA PADRE ---
         if (requestor.role === "PARENT") {
             if (status === "DONE" && currentTask.status !== "DONE") {
+
                 await db.transaction(async (tx) => {
+                    // 1. Actualizar Tarea
                     await tx.update(task).set({ status: "DONE" }).where(eq(task.id, taskId));
 
+                    // 2. Pagar y Registrar (Solo si tiene dueño)
                     if (currentTask.assignedToId) {
+                        // A. Sumar puntos
                         await tx.update(member)
                             .set({ balance: sql`${member.balance} + ${currentTask.points}` })
                             .where(and(eq(member.userId, currentTask.assignedToId), eq(member.familyId, currentTask.familyId)));
+
+                        // B. CREAR REGISTRO EN EL HISTORIAL (NUEVO)
+                        await tx.insert(transaction).values({
+                            id: randomUUID(),
+                            familyId: currentTask.familyId,
+                            userId: currentTask.assignedToId,
+                            amount: currentTask.points,
+                            type: "EARNED",
+                            description: `Tarea completada: ${currentTask.title}`,
+                        });
                     }
                 });
                 return res.json({ success: true, status: "DONE" });

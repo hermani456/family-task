@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import { reward, member } from "@family-task/shared";
+import { reward, member, transaction } from "@family-task/shared";
 import { eq, and, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
@@ -74,12 +74,24 @@ export const redeemReward = async (req: Request, res: Response) => {
                 throw new Error(`Te faltan ${targetReward.cost - userMember.balance} puntos`);
             }
 
-            await tx.update(member)
-                .set({
-                    balance: sql`${member.balance} - ${targetReward.cost}`
-                })
-                .where(eq(member.id, userMember.id));
+            await db.transaction(async (tx) => {
+                // ... (verificaciones de saldo igual que antes) ...
 
+                // 4. EJECUTAR EL COBRO
+                await tx.update(member)
+                    .set({ balance: sql`${member.balance} - ${targetReward.cost}` })
+                    .where(eq(member.id, userMember.id));
+
+                // 5. REGISTRAR EN HISTORIAL (NUEVO)
+                await tx.insert(transaction).values({
+                    id: randomUUID(),
+                    familyId: userMember.familyId,
+                    userId: userId,
+                    amount: -targetReward.cost, // Negativo porque es gasto
+                    type: "SPENT",
+                    description: `Canjeado: ${targetReward.title}`,
+                });
+            });
         });
 
         res.json({ success: true, message: "¡Premio canjeado!" });

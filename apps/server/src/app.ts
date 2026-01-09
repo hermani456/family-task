@@ -8,6 +8,7 @@ import { createFamily, joinFamily, getFamilyMembers } from "./controllers/family
 import { getMyFamily } from "./controllers/user.controller";
 import { getFamilyTasks, createTask, updateTaskStatus } from "./controllers/task.controller";
 import { getRewards, createReward, redeemReward } from "./controllers/reward.controller";
+import { getHistory } from "./controllers/transaction.controller";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,6 +37,7 @@ app.get("/api/families/members", requireAuth, getFamilyMembers);
 app.get("/api/rewards", requireAuth, getRewards);
 app.post("/api/rewards", requireAuth, createReward);
 app.post("/api/rewards/:rewardId/redeem", requireAuth, redeemReward);
+app.get("/api/history", requireAuth, getHistory);
 
 // app.listen(port, () => {
 //     console.log(`Example app listening on port ${port}`);

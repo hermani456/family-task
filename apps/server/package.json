@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx --watch src/server.ts",
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "db:push": "drizzle-kit push"
   },
   "keywords": [],
   "author": "",

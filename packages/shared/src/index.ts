@@ -4,7 +4,7 @@ export * from "./schema";
 // 2. Exportamos TIPOS TypeScript inferidos automáticamente
 // Esto es lo que usará el Frontend para no escribir interfaces a mano.
 import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
-import { family, member, task, user, reward } from "./schema";
+import { family, member, task, user, reward, transaction } from "./schema";
 
 // Tipos para USUARIO
 export type User = InferSelectModel<typeof user>;
@@ -24,3 +24,5 @@ export type TaskWithAssignee = Task & {
 };
 
 export type Reward = InferSelectModel<typeof reward>;
+
+export type Transaction = InferSelectModel<typeof transaction>;
