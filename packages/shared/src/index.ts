@@ -1,10 +1,26 @@
-// packages/shared/src/index.ts
-import { z } from 'zod';
+// 1. Re-exportamos todo el esquema (tablas, enums, etc)
+export * from "./schema";
 
-export const helloSchema = z.object({
-    message: z.string(),
-});
+// 2. Exportamos TIPOS TypeScript inferidos automáticamente
+// Esto es lo que usará el Frontend para no escribir interfaces a mano.
+import { type InferSelectModel, type InferInsertModel } from "drizzle-orm";
+import { family, member, task, user, reward } from "./schema";
 
-export type HelloType = z.infer<typeof helloSchema>;
+// Tipos para USUARIO
+export type User = InferSelectModel<typeof user>;
 
-export const SHARED_MESSAGE = "¡Hola desde el paquete compartido!";
+// Tipos para FAMILIA
+export type Family = InferSelectModel<typeof family>;
+
+// Tipos para MIEMBROS
+export type Member = InferSelectModel<typeof member>;
+
+// Tipos para TAREAS
+export type Task = InferSelectModel<typeof task>;
+export type NewTask = InferInsertModel<typeof task>;
+
+export type TaskWithAssignee = Task & {
+  assignedToName: string | null;
+};
+
+export type Reward = InferSelectModel<typeof reward>;

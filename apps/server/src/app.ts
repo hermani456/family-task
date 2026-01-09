@@ -7,6 +7,7 @@ import { requireAuth } from "./middleware/auth.middleware";
 import { createFamily, joinFamily, getFamilyMembers } from "./controllers/family.controller";
 import { getMyFamily } from "./controllers/user.controller";
 import { getFamilyTasks, createTask, updateTaskStatus } from "./controllers/task.controller";
+import { getRewards, createReward, redeemReward } from "./controllers/reward.controller";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -32,7 +33,12 @@ app.post("/api/tasks", requireAuth, createTask);
 app.post("/api/families/join", requireAuth, joinFamily);
 app.patch("/api/tasks/:taskId/status", requireAuth, updateTaskStatus);
 app.get("/api/families/members", requireAuth, getFamilyMembers);
+app.get("/api/rewards", requireAuth, getRewards);
+app.post("/api/rewards", requireAuth, createReward);
+app.post("/api/rewards/:rewardId/redeem", requireAuth, redeemReward);
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`);
+// });
+
+export default app;

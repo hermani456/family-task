@@ -1,5 +1,6 @@
 import { useMyFamily } from "../hooks/useMyFamily";
 import { signOut } from "../lib/auth-client";
+import { RewardsList } from "./RewardsList";
 import { TaskList } from "./TaskList";
 
 export const Dashboard = () => {
@@ -89,7 +90,7 @@ export const Dashboard = () => {
             <TaskList userRole={role} userId={data.family.memberId} />
           </div>
           <div className="bg-white p-6 rounded-xl border shadow-sm h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
-            (Miembros / Actividad)
+            <RewardsList userRole={role} userBalance={balance} />
           </div>
         </div>
       </main>

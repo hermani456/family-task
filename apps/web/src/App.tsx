@@ -2,7 +2,6 @@ import { CreateFamily } from "./components/CreateFamily";
 import { Dashboard } from "./components/Dashboard";
 import { useMyFamily } from "./hooks/useMyFamily";
 import { useState } from "react";
-// 1. IMPORTANTE: Agregamos signIn a los imports
 import { signUp, signIn, useSession, signOut } from "./lib/auth-client";
 
 function App() {

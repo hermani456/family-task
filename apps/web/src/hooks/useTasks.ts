@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { TaskWithAssignee } from "@family-task/shared"; 
 
 export const useTasks = () => {
     const queryClient = useQueryClient();
 
-    const query = useQuery({
+    const query = useQuery<TaskWithAssignee[]>({
         queryKey: ["tasks"],
         queryFn: async () => {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks`, {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import { family, member, user } from "../db/schema";
+import { family, member, user } from "@family-task/shared"
 import { randomUUID, randomBytes } from "crypto";
 import { eq } from "drizzle-orm";
 

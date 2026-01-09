@@ -1,19 +1,11 @@
 import { useState } from "react";
 import { useTasks } from "../hooks/useTasks";
 import { useMembers } from "../hooks/useMembers";
+import type { TaskWithAssignee } from "@family-task/shared";
 
 interface TaskListProps {
   userRole: "PARENT" | "CHILD";
   userId: string;
-}
-
-interface Task {
-  id: string;
-  title: string;
-  points: number;
-  status: "PENDING" | "IN_PROGRESS" | "REVIEW" | "DONE" | "REJECTED";
-  assignedToName: string;
-  assignedToId: string | null;
 }
 
 export const TaskList = ({ userRole, userId }: TaskListProps) => {
@@ -82,7 +74,7 @@ export const TaskList = ({ userRole, userId }: TaskListProps) => {
           </p>
         )}
 
-        {tasks?.map((t: Task) => {
+        {tasks?.map((t: TaskWithAssignee) => {
           const isMine = t.assignedToId === userId;
 
           return (

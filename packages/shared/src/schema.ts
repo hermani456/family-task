@@ -129,3 +129,14 @@ export const task = pgTable("task", {
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const reward = pgTable("reward", {
+  id: text("id").primaryKey(),
+  familyId: text("family_id").notNull().references(() => family.id, { onDelete: 'cascade' }),
+  title: text("title").notNull(),
+  description: text("description"),
+  cost: integer("cost").notNull(),
+  image: text("image"),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
