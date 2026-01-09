@@ -14,7 +14,7 @@ export const useTasks = () => {
     });
 
     const createTaskMutation = useMutation({
-        mutationFn: async (newTask: { title: string; points: number }) => {
+        mutationFn: async (newTask: { title: string; points: number; assignedToId?: string | null }) => {
             await fetch(`${import.meta.env.VITE_API_URL}/api/tasks`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -27,5 +27,26 @@ export const useTasks = () => {
         },
     });
 
-    return { ...query, createTaskMutation };
+    const updateStatusMutation = useMutation({
+        mutationFn: async ({ taskId, status }: { taskId: string; status: string }) => {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tasks/${taskId}/status`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ status }),
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || "Error updating task");
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["tasks"] });
+            queryClient.invalidateQueries({ queryKey: ["my-family"] });
+        },
+        onError: (err) => alert(err.message),
+    });
+
+    return { ...query, createTaskMutation, updateStatusMutation };
 };

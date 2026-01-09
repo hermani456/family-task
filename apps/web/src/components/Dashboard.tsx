@@ -86,7 +86,7 @@ export const Dashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl border shadow-sm col-span-2 h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
-            <TaskList />
+            <TaskList userRole={role} userId={data.family.memberId} />
           </div>
           <div className="bg-white p-6 rounded-xl border shadow-sm h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
             (Miembros / Actividad)
