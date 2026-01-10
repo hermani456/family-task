@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTasks } from "../hooks/useTasks";
 import { useMembers } from "../hooks/useMembers";
 import type { TaskWithAssignee } from "@family-task/shared";
+import { UserAvatar } from "./UserAvatar";
 
 interface TaskListProps {
   userRole: "PARENT" | "CHILD";
@@ -86,15 +87,27 @@ export const TaskList = ({ userRole, userId }: TaskListProps) => {
                 <div className="flex items-center gap-2 mb-1">
                   <h4 className="font-medium text-lg">{t.title}</h4>
                   {t.assignedToName && (
-                    <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${
+                    <div
+                      className={`flex items-center gap-1.5 px-2 py-1 rounded-full border transition-colors ${
                         isMine
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-gray-100 text-gray-600"
+                          ? "bg-blue-50 border-blue-200"
+                          : "bg-gray-50 border-gray-200"
                       }`}
                     >
-                      {isMine ? "👤 TÚ" : `👤 ${t.assignedToName}`}
-                    </span>
+                      <UserAvatar
+                        name={t.assignedToName}
+                        className="w-5 h-5"
+                        size={32}
+                      />
+
+                      <span
+                        className={`text-xs font-bold ${
+                          isMine ? "text-blue-700" : "text-gray-600"
+                        }`}
+                      >
+                        {isMine ? "TÚ" : t.assignedToName}
+                      </span>
+                    </div>
                   )}
                 </div>
                 <span

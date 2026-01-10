@@ -1,114 +1,140 @@
 import { useMyFamily } from "../hooks/useMyFamily";
 import { signOut } from "../lib/auth-client";
-import { RewardsList } from "./RewardsList";
-import { TaskList } from "./TaskList";
-import { ActivityFeed } from "./ActivityFeed";
+import { RewardsList } from "../components/RewardsList";
+import { TaskList } from "../components/TaskList";
+import { ActivityFeed } from "../components/ActivityFeed";
+import { UserAvatar } from "../components/UserAvatar"; // <--- Asegúrate de tener este componente creado
 
 export const Dashboard = () => {
   const { data, isLoading } = useMyFamily();
 
-  if (isLoading) return <div className="p-10">Cargando tu hogar...</div>;
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50 text-gray-400 animate-pulse">
+        Cargando tu hogar...
+      </div>
+    );
+  }
 
-  if (!data?.family) return <div>No tienes familia asignada.</div>;
+  if (!data?.family || !data?.member) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        No tienes familia asignada o hubo un error.
+      </div>
+    );
+  }
 
-  const { familyName, inviteCode, role, balance } = data.family;
+  // Desestructuramos según la respuesta real del backend (Family + Member)
+  const { family } = data;
+  const { member } = data; // member tiene: role, balance, userId, user { name }
+
+  const firstName = member.user.name.split(" ")[0]; // Solo el primer nombre
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
-        <div className="p-6 border-b border-gray-100">
-          <h1 className="text-xl font-bold tracking-tight text-indigo-600">
-            FamilyTask
-          </h1>
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden font-sans">
+      {/* --- HEADER SUPERIOR (Sticky & Mobile Friendly) --- */}
+      <header className="bg-white border-b border-gray-200 px-4 py-3 md:px-8 md:py-4 flex justify-between items-center shadow-sm z-10 shrink-0">
+        {/* IZQUIERDA: Avatar + Saludo */}
+        <div className="flex items-center gap-3">
+          <UserAvatar
+            name={member.user.name}
+            className="w-10 h-10 md:w-12 md:h-12 border-2 border-gray-100"
+          />
+
+          <div className="leading-tight">
+            <h1 className="text-lg md:text-xl font-black tracking-tight text-gray-900">
+              Hola, {firstName}
+            </h1>
+            <div className="flex items-center gap-2 text-xs md:text-sm text-gray-500 font-medium">
+              <span>Familia {family.name}</span>
+              <span className="hidden md:inline-block text-gray-300">•</span>
+              {/* Código de Invitación (Discreto) */}
+              <span
+                className="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-mono tracking-wider text-[10px] border border-gray-200"
+                title="Código de invitación"
+              >
+                {family.inviteCode}
+              </span>
+            </div>
+          </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-900 bg-gray-100 rounded-lg"
-          >
-            Tablero
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
-          >
-            Tareas
-          </a>
-          <a
-            href="#"
-            className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
-          >
-            Recompensas
-          </a>
-        </nav>
+        {/* DERECHA: Saldo + Logout */}
+        <div className="flex items-center gap-4">
+          {/* Píldora de Saldo */}
+          <div className="flex flex-col items-end group cursor-default">
+            <div className="bg-yellow-400 text-black font-black px-3 py-1 md:px-5 md:py-1.5 rounded-full shadow-sm text-sm md:text-lg flex items-center gap-1.5 transform group-hover:scale-105 transition-transform">
+              <span>🪙</span>
+              <span>{member.balance}</span>
+            </div>
+            <span className="text-[9px] md:text-[10px] text-gray-400 font-bold mt-0.5 mr-1 tracking-wider uppercase">
+              Puntos
+            </span>
+          </div>
 
-        <div className="p-4 border-t border-gray-100">
+          {/* Botón Salir (Icono en móvil, Texto en desktop) */}
           <button
             onClick={() => signOut().then(() => window.location.reload())}
-            className="text-sm text-red-500 hover:text-red-700 w-full text-left"
+            className="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-gray-100"
+            title="Cerrar Sesión"
           >
-            Cerrar Sesión
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+              />
+            </svg>
           </button>
         </div>
-      </aside>
+      </header>
 
-      <main className="flex-1 p-8">
-        <header className="flex justify-between items-center mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">{familyName}</h2>
-            <p className="text-sm text-gray-500">
-              Rol:{" "}
-              <span className="font-medium bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs">
-                {role}
-              </span>
-            </p>
+      {/* --- CONTENIDO PRINCIPAL (Scrollable) --- */}
+      <main className="flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth">
+        <div className="max-w-7xl mx-auto h-full grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 pb-20 md:pb-0">
+          {/* 1. SECCIÓN TAREAS (Principal) */}
+          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-[500px] md:h-full transition-all hover:shadow-md">
+            <div className="flex items-center justify-between mb-4 shrink-0">
+              <h2 className="text-lg font-bold flex items-center gap-2 text-gray-800">
+                📝 Tareas
+              </h2>
+              {member.role === "CHILD" && (
+                <span className="bg-blue-50 text-blue-600 text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide">
+                  Tu Turno
+                </span>
+              )}
+            </div>
+            {/* Pasamos userId y role correctamente desde 'member' */}
+            <TaskList userRole={member.role} userId={member.userId} />
           </div>
 
-          <div className="flex gap-4">
-            <div className="bg-white p-3 rounded-lg border shadow-sm flex flex-col items-end">
-              <span className="text-xs text-gray-400 uppercase font-bold">
-                Código de Invitación:{" "}
-              </span>
-              <span className="text-lg font-mono font-bold tracking-widest">
-                {inviteCode}
+          {/* 2. SECCIÓN PREMIOS */}
+          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-[450px] md:h-full transition-all hover:shadow-md">
+            <div className="flex items-center justify-between mb-4 shrink-0">
+              <h2 className="text-lg font-bold flex items-center gap-2 text-gray-800">
+                🎁 Tienda
+              </h2>
+              <span className="bg-pink-50 text-pink-600 text-[10px] px-2 py-1 rounded-full font-bold uppercase tracking-wide">
+                Canjear
               </span>
             </div>
+            <RewardsList userRole={member.role} userBalance={member.balance} />
+          </div>
 
-            <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200 flex flex-col items-end min-w-[100px]">
-              <span className="text-xs text-yellow-600 uppercase font-bold">
-                Mis Puntos:{" "}
-              </span>
-              <span className="text-xl font-bold text-yellow-700">
-                {balance}
-              </span>
+          {/* 3. SECCIÓN HISTORIAL */}
+          <div className="bg-gray-50/80 p-5 rounded-2xl border border-dashed border-gray-300 flex flex-col h-[350px] md:h-full">
+            <div className="flex items-center justify-between mb-4 shrink-0">
+              <h2 className="text-lg font-bold flex items-center gap-2 text-gray-500">
+                📊 Actividad
+              </h2>
             </div>
-          </div>
-        </header>
-
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl border shadow-sm col-span-2 h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
-            <TaskList userRole={role} userId={data.family.memberId} />
-          </div>
-          <div className="bg-white p-6 rounded-xl border shadow-sm h-64 flex items-center justify-center text-gray-400 border-dashed border-2">
-            <RewardsList userRole={role} userBalance={balance} />
-          </div>
-        </div> */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full">
-          {/* COLUMNA 1: TAREAS (Ocupa más espacio en móvil, o igual en desktop) */}
-          <div className="md:col-span-1 bg-white p-6 rounded-xl border shadow-sm h-[500px] flex flex-col">
-            <h2 className="text-xl font-bold mb-4">📝 Tareas</h2>
-            <TaskList userRole={role} userId={data.family.memberId} />
-          </div>
-
-          {/* COLUMNA 2: PREMIOS */}
-          <div className="bg-white p-6 rounded-xl border shadow-sm h-[500px] flex flex-col">
-            <h2 className="text-xl font-bold mb-4">🎁 Premios</h2>
-            <RewardsList userRole={role} userBalance={balance} />
-          </div>
-
-          {/* COLUMNA 3: HISTORIAL (NUEVA) */}
-          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 h-[500px] flex flex-col">
             <ActivityFeed />
           </div>
         </div>

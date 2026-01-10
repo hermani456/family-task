@@ -152,3 +152,35 @@ export const transaction = pgTable("transaction", {
 
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const memberRelations = relations(member, ({ one }) => ({
+  // Un miembro pertenece a un usuario
+  user: one(user, {
+    fields: [member.userId],
+    references: [user.id],
+  }),
+  // Un miembro pertenece a una familia
+  family: one(family, {
+    fields: [member.familyId],
+    references: [family.id],
+  }),
+}));
+
+// 3. Relaciones de FAMILIAS
+export const familyRelations = relations(family, ({ many }) => ({
+  members: many(member),
+  tasks: many(task),
+  rewards: many(reward),
+}));
+
+// 4. Relaciones de TAREAS
+export const taskRelations = relations(task, ({ one }) => ({
+  family: one(family, {
+    fields: [task.familyId],
+    references: [family.id],
+  }),
+  assignedTo: one(user, {
+    fields: [task.assignedToId],
+    references: [user.id],
+  }),
+}));

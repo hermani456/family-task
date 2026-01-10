@@ -13,8 +13,6 @@ export const getHistory = async (req: Request, res: Response) => {
 
         if (!userMember) return res.status(403).json({ error: "No eres miembro" });
 
-        // Traemos las últimas 20 transacciones de la familia completa
-        // (O podrías filtrar solo las del usuario si prefieres privacidad)
         const history = await db
             .select()
             .from(transaction)
