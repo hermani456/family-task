@@ -100,7 +100,7 @@ export const Dashboard = () => {
       <main className="flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth">
         <div className="max-w-7xl mx-auto h-full grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 pb-20 md:pb-0">
           {/* 1. SECCIÓN TAREAS (Principal) */}
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-[500px] md:h-full transition-all hover:shadow-md">
+          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-125 md:h-full transition-all hover:shadow-md">
             <div className="flex items-center justify-between mb-4 shrink-0">
               <h2 className="text-lg font-bold flex items-center gap-2 text-gray-800">
                 📝 Tareas
@@ -116,7 +116,7 @@ export const Dashboard = () => {
           </div>
 
           {/* 2. SECCIÓN PREMIOS */}
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-[450px] md:h-full transition-all hover:shadow-md">
+          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col h-112.5 md:h-full transition-all hover:shadow-md">
             <div className="flex items-center justify-between mb-4 shrink-0">
               <h2 className="text-lg font-bold flex items-center gap-2 text-gray-800">
                 🎁 Tienda
@@ -129,7 +129,7 @@ export const Dashboard = () => {
           </div>
 
           {/* 3. SECCIÓN HISTORIAL */}
-          <div className="bg-gray-50/80 p-5 rounded-2xl border border-dashed border-gray-300 flex flex-col h-[350px] md:h-full">
+          <div className="bg-gray-50/80 p-5 rounded-2xl border border-dashed border-gray-300 flex flex-col h-87.5 md:h-full">
             <div className="flex items-center justify-between mb-4 shrink-0">
               <h2 className="text-lg font-bold flex items-center gap-2 text-gray-500">
                 📊 Actividad
