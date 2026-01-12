@@ -1,5 +1,7 @@
 import { HousePlus } from "lucide-react";
 import { Link } from "react-router";
+import { ViewTransition } from "react";
+import VTLink from "../Transition";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -23,7 +25,7 @@ const AuthLayout = ({ children, mode }: AuthLayoutProps) => {
 
       <div className="w-full max-w-87.5">
         <div className="bg-surface border border-border rounded-full p-1.5 flex mb-6 shadow-sm">
-          <Link
+          <VTLink
             to="/login"
             className={`flex-1 text-center py-2 text-sm font-bold rounded-full transition-all duration-200 ${
               mode === "login"
@@ -32,8 +34,8 @@ const AuthLayout = ({ children, mode }: AuthLayoutProps) => {
             }`}
           >
             Ingresar
-          </Link>
-          <Link
+          </VTLink>
+          <VTLink
             to="/register"
             className={`flex-1 text-center py-2 text-sm font-bold rounded-full transition-all duration-200 ${
               mode === "register"
@@ -42,11 +44,11 @@ const AuthLayout = ({ children, mode }: AuthLayoutProps) => {
             }`}
           >
             Registrarse
-          </Link>
+          </VTLink>
         </div>
 
         <div className="bg-surface border border-border rounded-3xl p-6 shadow-xl shadow-black/5">
-          {children}
+          <ViewTransition name="auth-form">{children}</ViewTransition>
         </div>
       </div>
     </div>
