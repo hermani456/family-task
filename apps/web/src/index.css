@@ -8,6 +8,9 @@
   --color-primary: var(--color-primary);
   --color-primary-foreground: var(--color-primary-foreground);
 
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+
   --color-secondary: var(--color-secondary);
   --color-secondary-foreground: var(--color-secondary-foreground);
 
@@ -46,6 +49,9 @@
   .dark {
     --color-primary: #6366f1;
     --color-primary-foreground: #ffffff;
+
+    --color-muted: #1e293b;
+    --color-muted-foreground: #94a3b8;
 
     --color-secondary: #fbbf24;
     --color-secondary-foreground: #0f172a;

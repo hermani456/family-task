@@ -1,9 +1,9 @@
 import { HousePlus } from "lucide-react";
-import { Link } from "react-router"; // O el router que uses (wouter, etc)
+import { Link } from "react-router";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
-  mode: "login" | "register"; // Recibimos el modo desde afuera
+  mode: "login" | "register";
 }
 
 const AuthLayout = ({ children, mode }: AuthLayoutProps) => {
