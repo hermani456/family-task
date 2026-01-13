@@ -1,17 +1,17 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-    email: z.email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    email: z.email("Correo electrónico inválido"),
+    password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
 });
 
 export const registerSchema = loginSchema.extend({
-    name: z.string().min(2, "Name must be at least 2 characters"),
-    repeatPassword: z.string().min(8, "Password must be at least 8 characters"),
+    name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
+    repeatPassword: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
 }).refine((data) => data.password === data.repeatPassword, {
-    message: "Passwords do not match",
+    message: "Las contraseñas no coinciden",
     path: ["repeatPassword"],
 });
 
-export type AuthSchema = z.infer<typeof loginSchema>;
+export type LoginSchema = z.infer<typeof loginSchema>;
 export type RegisterSchema = z.infer<typeof registerSchema>;
