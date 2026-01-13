@@ -1,31 +1,74 @@
 import AuthLayout from "../../components/layouts/AuthLayout";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, Lock, User, Loader2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { registerSchema, type RegisterSchema } from "../../lib/auth-schema";
+import { signUp } from "../../lib/auth-client";
+import { toast } from "sonner";
+import { SocialButton } from "../../components/ui/social-button";
 
 export const RegisterPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = async (data: RegisterSchema) => {
+    const { error } = await signUp.email({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Registro exitoso. Confirma tu correo para continuar.");
+  };
+
   return (
     <AuthLayout mode="register">
-      <form className="space-y-5">
+      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1.5">
           <label
-            htmlFor="name"
+            htmlFor="email"
             className="text-sm font-bold text-muted-foreground tracking-tight"
           >
             Nombre
           </label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
+            <div
+              className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors 
+                ${
+                  errors.name
+                    ? "text-danger"
+                    : "text-muted-foreground group-focus-within:text-primary"
+                }`}
+            >
               <User className="w-5 h-5" />
             </div>
             <input
-              type="name"
+              type="text"
               id="name"
               placeholder="Tu nombre"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-foreground font-medium 
-                         placeholder:text-muted-foreground/50
-                         focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary 
-                         transition-all duration-200 shadow-sm"
+              {...register("name")}
+              className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground font-medium 
+                         placeholder:text-muted-foreground/50 transition-all duration-200 shadow-sm outline-none
+                         ${
+                           errors.name
+                             ? "border-danger focus:ring-2 focus:ring-danger/20"
+                             : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                         }`}
             />
           </div>
+          {errors.name && (
+            <div className="mt-1 text-xs text-danger font-medium ml-1">
+              {errors.name.message}
+            </div>
+          )}
         </div>
         <div className="space-y-1.5">
           <label
@@ -35,20 +78,37 @@ export const RegisterPage = () => {
             Email
           </label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
+            <div
+              className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors 
+                ${
+                  errors.email
+                    ? "text-danger"
+                    : "text-muted-foreground group-focus-within:text-primary"
+                }`}
+            >
               <Mail className="w-5 h-5" />
             </div>
             <input
               type="email"
               id="email"
               placeholder="ejemplo@familia.com"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-foreground font-medium 
-                         placeholder:text-muted-foreground/50
-                         focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary 
-                         transition-all duration-200 shadow-sm"
+              {...register("email")}
+              className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground font-medium 
+                         placeholder:text-muted-foreground/50 transition-all duration-200 shadow-sm outline-none
+                         ${
+                           errors.email
+                             ? "border-danger focus:ring-2 focus:ring-danger/20"
+                             : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                         }`}
             />
           </div>
+          {errors.email && (
+            <div className="mt-1 text-xs text-danger font-medium ml-1">
+              {errors.email.message}
+            </div>
+          )}
         </div>
+
         <div className="space-y-1.5">
           <label
             htmlFor="password"
@@ -57,37 +117,100 @@ export const RegisterPage = () => {
             Contraseña
           </label>
           <div className="relative group">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
+            <div
+              className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors 
+                ${
+                  errors.password
+                    ? "text-danger"
+                    : "text-muted-foreground group-focus-within:text-primary"
+                }`}
+            >
               <Lock className="w-5 h-5" />
             </div>
             <input
               type="password"
               id="password"
               placeholder="••••••"
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-foreground font-medium 
-                         placeholder:text-muted-foreground/50
-                         focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary 
-                         transition-all duration-200 shadow-sm"
+              {...register("password")}
+              className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground font-medium 
+                         placeholder:text-muted-foreground/50 transition-all duration-200 shadow-sm outline-none
+                         ${
+                           errors.password
+                             ? "border-danger focus:ring-2 focus:ring-danger/20"
+                             : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                         }`}
             />
           </div>
+          {errors.password && (
+            <div className="mt-1 text-xs text-danger font-medium ml-1">
+              {errors.password.message}
+            </div>
+          )}
         </div>
-        <button className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:bg-primary/90 active:translate-y-0 transition-all duration-200">
-          Registrarse
-        </button>
-        <div className="pt-2">
-          <div className="relative flex py-2 items-center">
-            <div className="grow border-t border-border"></div>
-            <span className="shrink px-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-              O continúa con
-            </span>
-            <div className="grow border-t border-border"></div>
-          </div>
 
+        <div className="space-y-1.5">
+          <label
+            htmlFor="repeatPassword"
+            className="text-sm font-bold text-muted-foreground tracking-tight"
+          >
+            Repetir Contraseña
+          </label>
+          <div className="relative group">
+            <div
+              className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors 
+                ${
+                  errors.repeatPassword
+                    ? "text-danger"
+                    : "text-muted-foreground group-focus-within:text-primary"
+                }`}
+            >
+              <Lock className="w-5 h-5" />
+            </div>
+            <input
+              type="password"
+              id="repeatPassword"
+              placeholder="••••••"
+              {...register("repeatPassword")}
+              className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground font-medium 
+                         placeholder:text-muted-foreground/50 transition-all duration-200 shadow-sm outline-none
+                         ${
+                           errors.repeatPassword
+                             ? "border-danger focus:ring-2 focus:ring-danger/20"
+                             : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                         }`}
+            />
+          </div>
+          {errors.repeatPassword && (
+            <div className="mt-1 text-xs text-danger font-medium ml-1">
+              {errors.repeatPassword.message}
+            </div>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold shadow-lg shadow-primary/20 
+                     hover:shadow-primary/40 hover:bg-primary/90 active:translate-y-0 transition-all duration-200
+                     disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Ingresando...
+            </>
+          ) : (
+            "Ingresar"
+          )}
+        </button>
+
+        <div className="pt-2">
           <div className="grid grid-cols-2 gap-4 mt-3">
             <SocialButton
               icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
               label="Google"
             />
+
             <SocialButton
               icon="https://raw.githubusercontent.com/devicons/devicon/refs/tags/v2.17.0/icons/apple/apple-original.svg"
               label="Apple"
@@ -99,25 +222,3 @@ export const RegisterPage = () => {
     </AuthLayout>
   );
 };
-
-interface SocialButtonProps {
-  icon: string;
-  label: string;
-  isDarkIcon?: boolean;
-}
-
-const SocialButton = ({ icon, label, isDarkIcon }: SocialButtonProps) => (
-  <button
-    type="button"
-    className="flex items-center justify-center gap-3 border border-border bg-surface rounded-xl py-2.5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shadow-sm group"
-  >
-    <img
-      src={icon}
-      alt={label}
-      className={`w-5 h-5 ${isDarkIcon ? "dark:invert" : ""}`}
-    />
-    <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground transition-colors">
-      {label}
-    </span>
-  </button>
-);

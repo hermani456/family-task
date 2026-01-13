@@ -17,16 +17,15 @@ export const LoginPage = () => {
   });
 
   const onSubmit = async (data: LoginSchema) => {
-    await signIn.email({
+    const { data: session, error } = await signIn.email({
       email: data.email,
       password: data.password,
-      callbackURL: "/",
-      fetchOptions: {
-        onError: (ctx) => {
-          toast.error(ctx.error.message);
-        },
-      },
     });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success(`Bienvenido de nuevo ${session?.user?.name || "usuario"}`);
   };
 
   return (
@@ -154,5 +153,3 @@ export const LoginPage = () => {
     </AuthLayout>
   );
 };
-
-
