@@ -71,7 +71,7 @@ export const joinFamily = async (req: Request, res: Response) => {
         res.json({ success: true, familyId: targetFamily.id, role: "CHILD" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error joining family" });
+        res.status(500).json({ error: "Error al unirse a la familia" });
     }
 };
 
@@ -99,6 +99,6 @@ export const getFamilyMembers = async (req: Request, res: Response) => {
         res.json(members);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error fetching members" });
+        res.status(500).json({ error: "Error al obtener los miembros de la familia" });
     }
 };

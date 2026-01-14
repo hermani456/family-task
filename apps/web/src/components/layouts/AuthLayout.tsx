@@ -1,5 +1,4 @@
 import { HousePlus } from "lucide-react";
-import { Link } from "react-router";
 import { ViewTransition } from "react";
 import VTLink from "../Transition";
 

@@ -50,7 +50,7 @@ export const Dashboard = () => {
               <span className="hidden md:inline-block text-gray-300">•</span>
               {/* Código de Invitación (Discreto) */}
               <span
-                className="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 font-mono tracking-wider text-[10px] border border-gray-200"
+                className="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600 tracking-wider text-[10px] border border-gray-200"
                 title="Código de invitación"
               >
                 {family.inviteCode}

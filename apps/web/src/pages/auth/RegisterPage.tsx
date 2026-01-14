@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { registerSchema, type RegisterSchema } from "../../lib/auth-schema";
 import { signUp } from "../../lib/auth-client";
 import { toast } from "sonner";
-import { SocialButton } from "../../components/ui/social-button";
 
 export const RegisterPage = () => {
   const {
@@ -31,10 +30,10 @@ export const RegisterPage = () => {
 
   return (
     <AuthLayout mode="register">
-      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1.5">
           <label
-            htmlFor="email"
+            htmlFor="name"
             className="text-sm font-bold text-muted-foreground tracking-tight"
           >
             Nombre
@@ -203,21 +202,6 @@ export const RegisterPage = () => {
             "Ingresar"
           )}
         </button>
-
-        <div className="pt-2">
-          <div className="grid grid-cols-2 gap-4 mt-3">
-            <SocialButton
-              icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
-              label="Google"
-            />
-
-            <SocialButton
-              icon="https://raw.githubusercontent.com/devicons/devicon/refs/tags/v2.17.0/icons/apple/apple-original.svg"
-              label="Apple"
-              isDarkIcon
-            />
-          </div>
-        </div>
       </form>
     </AuthLayout>
   );

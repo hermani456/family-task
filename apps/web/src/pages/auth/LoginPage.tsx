@@ -30,7 +30,7 @@ export const LoginPage = () => {
 
   return (
     <AuthLayout mode="login">
-      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1.5">
           <label
             htmlFor="email"
@@ -136,6 +136,15 @@ export const LoginPage = () => {
         </button>
 
         <div className="pt-2">
+          <div className="flex py-2 items-center">
+            <div className="grow border-t border-border"></div>
+
+            <span className="shrink px-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
+              O continúa con
+            </span>
+
+            <div className="grow border-t border-border"></div>
+          </div>
           <div className="grid grid-cols-2 gap-4 mt-3">
             <SocialButton
               icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"

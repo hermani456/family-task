@@ -1,34 +1,38 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { ThemeProvider } from "./components/theme-provider";
-import { Dashboard } from "./components/Dashboard";
+import { AuthGuard } from "./components/layouts/AuthGuard";
+import { PublicGuard } from "./components/layouts/PublicGuard";
+
+import { Dashboard } from "./pages/Dashboard";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
-import { authClient } from "./lib/auth-client";
+import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
 
 function App() {
-  const { data: session, isPending } = authClient.useSession();
-
-  if (isPending)
-    return <div className="h-screen grid place-items-center">Cargando...</div>;
-
   return (
     <ThemeProvider defaultTheme="system" storageKey="family-task-theme">
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={session ? <Dashboard /> : <Navigate to="/login" />}
-          />
+          {/* Group 1: Public routes (Login, Register) */}
+          {/* If a logged-in user reaches these, the guard will redirect them */}
+          <Route element={<PublicGuard />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
 
-          <Route
-            path="/login"
-            element={!session ? <LoginPage /> : <Navigate to="/" />}
-          />
+          {/* Group 2: Onboarding (special case) */}
+          {/* Requires authentication but not a family membership */}
+          <Route path="/onboarding" element={<OnboardingPage />} />
 
-          <Route
-            path="/register"
-            element={!session ? <RegisterPage /> : <Navigate to="/" />}
-          />
+          {/* Group 3: Protected routes (Dashboard) */}
+          {/* Requires authentication and a family; AuthGuard will redirect if not */}
+          <Route element={<AuthGuard />}>
+            <Route path="/" element={<Dashboard />} />
+            {/* Aquí irían más rutas: /tasks, /rewards, /settings */}
+          </Route>
+
+          {/* Fallback 404 */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
