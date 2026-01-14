@@ -26,3 +26,5 @@ export type TaskWithAssignee = Task & {
 export type Reward = InferSelectModel<typeof reward>;
 
 export type Transaction = InferSelectModel<typeof transaction>;
+
+export type UserRole = InferSelectModel<typeof member>["role"];

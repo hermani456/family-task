@@ -9,7 +9,7 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children, mode }: AuthLayoutProps) => {
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex flex-col items-center pt-12 md:pt-24 p-4">
       <div className="flex flex-col items-center mb-6 animate-in fade-in zoom-in duration-500">
         <div className="size-16 bg-primary rounded-2xl rotate-3 shadow-xl shadow-primary/30 mb-4 flex items-center justify-center">
           <HousePlus className="text-primary-foreground w-10 h-10" />

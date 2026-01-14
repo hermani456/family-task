@@ -1,37 +1,50 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router"; // O 'react-router-dom'
 import { ThemeProvider } from "./components/theme-provider";
 import { AuthGuard } from "./components/layouts/AuthGuard";
 import { PublicGuard } from "./components/layouts/PublicGuard";
+import { DashboardLayout } from "./components/layouts/DashboardLayout";
 
-import { Dashboard } from "./pages/Dashboard";
+// Imports de tus páginas (Asegúrate de tener estos componentes o créalos vacíos por ahora)
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
+import { ParentHome } from "./features/dashboard/ParentHome"; // O tu Home genérico
+import { TasksPage } from "./features/tasks/TasksPage";
+// import { RewardsPage } from "./features/rewards/RewardsPage"; // Descomenta cuando lo crees
 
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="family-task-theme">
       <BrowserRouter>
         <Routes>
-          {/* Group 1: Public routes (Login, Register) */}
-          {/* If a logged-in user reaches these, the guard will redirect them */}
+          {/* 1. RUTAS PÚBLICAS */}
           <Route element={<PublicGuard />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Route>
 
-          {/* Group 2: Onboarding (special case) */}
-          {/* Requires authentication but not a family membership */}
+          {/* 2. ONBOARDING */}
           <Route path="/onboarding" element={<OnboardingPage />} />
 
-          {/* Group 3: Protected routes (Dashboard) */}
-          {/* Requires authentication and a family; AuthGuard will redirect if not */}
+          {/* 3. RUTAS PROTEGIDAS (DASHBOARD) */}
           <Route element={<AuthGuard />}>
-            <Route path="/" element={<Dashboard />} />
-            {/* Aquí irían más rutas: /tasks, /rewards, /settings */}
+            {/* AQUÍ ESTÁ EL CAMBIO CLAVE:
+               DashboardLayout envuelve a las rutas hijas.
+               No lleva 'path', actúa como contenedor visual.
+            */}
+            <Route element={<DashboardLayout />}>
+              
+              {/* Ruta índice: Lo que se ve en http://localhost/ */}
+              <Route index element={<ParentHome />} /> 
+              
+              {/* Rutas hijas: Se renderizan DENTRO del <Outlet/> del Layout */}
+              <Route path="tasks" element={<TasksPage />} />
+              <Route path="rewards" element={<div>Página de Premios (Proximamente)</div>} />
+              
+            </Route>
           </Route>
 
-          {/* Fallback 404 */}
+          {/* 4. FALLBACK 404 */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
