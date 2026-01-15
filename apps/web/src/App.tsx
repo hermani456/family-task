@@ -8,8 +8,8 @@ import { DashboardLayout } from "./components/layouts/DashboardLayout";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
-import { ParentHome } from "./features/dashboard/ParentHome"; // O tu Home genérico
 import { TasksPage } from "./features/tasks/TasksPage";
+import { HomePage } from "./pages/HomePage";
 // import { RewardsPage } from "./features/rewards/RewardsPage"; // Descomenta cuando lo crees
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
             <Route element={<DashboardLayout />}>
               
               {/* Ruta índice: Lo que se ve en http://localhost/ */}
-              <Route index element={<ParentHome />} /> 
+              <Route index element={<HomePage />} /> 
               
               {/* Rutas hijas: Se renderizan DENTRO del <Outlet/> del Layout */}
               <Route path="tasks" element={<TasksPage />} />
