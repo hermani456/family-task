@@ -6,7 +6,7 @@ import cors from 'cors';
 import { requireAuth } from "./middleware/auth.middleware";
 import { createFamily, joinFamily, getFamilyMembers } from "./controllers/family.controller";
 import { getMyFamily } from "./controllers/user.controller";
-import { getFamilyTasks, createTask, updateTaskStatus } from "./controllers/task.controller";
+import { getFamilyTasks, createTask, updateTaskStatus, deleteTask } from "./controllers/task.controller";
 import { getRewards, createReward, redeemReward } from "./controllers/reward.controller";
 import { getHistory } from "./controllers/transaction.controller";
 
@@ -38,6 +38,7 @@ app.get("/api/rewards", requireAuth, getRewards);
 app.post("/api/rewards", requireAuth, createReward);
 app.post("/api/rewards/:rewardId/redeem", requireAuth, redeemReward);
 app.get("/api/history", requireAuth, getHistory);
+app.delete("/api/tasks/:taskId", requireAuth, deleteTask);
 
 // app.listen(port, () => {
 //     console.log(`Example app listening on port ${port}`);

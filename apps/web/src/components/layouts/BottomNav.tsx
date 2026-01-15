@@ -21,7 +21,6 @@ export const BottomNav = () => {
   // 2. Enlaces para HIJOS
   const childLinks = [
     { to: "/", icon: Home, label: "Mi Progreso" },
-    { to: "/tasks", icon: CheckSquare, label: "Mis Tareas" },
     { to: "/shop", icon: ShoppingBag, label: "Tienda" },
   ];
 

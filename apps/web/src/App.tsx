@@ -10,7 +10,7 @@ import { RegisterPage } from "./pages/auth/RegisterPage";
 import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
 import { TasksPage } from "./features/tasks/TasksPage";
 import { HomePage } from "./pages/HomePage";
-// import { RewardsPage } from "./features/rewards/RewardsPage"; // Descomenta cuando lo crees
+import { RewardsShopPage } from "./features/rewards/RewardsShopPage";
 
 function App() {
   return (
@@ -34,12 +34,11 @@ function App() {
             */}
             <Route element={<DashboardLayout />}>
               
-              {/* Ruta índice: Lo que se ve en http://localhost/ */}
               <Route index element={<HomePage />} /> 
               
               {/* Rutas hijas: Se renderizan DENTRO del <Outlet/> del Layout */}
               <Route path="tasks" element={<TasksPage />} />
-              <Route path="rewards" element={<div>Página de Premios (Proximamente)</div>} />
+              <Route path="shop" element={<RewardsShopPage />} />
               
             </Route>
           </Route>

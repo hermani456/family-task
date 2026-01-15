@@ -155,3 +155,39 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
         res.status(500).json({ error: "Error updating task" });
     }
 };
+
+export const deleteTask = async (req: Request, res: Response) => {
+    const userId = res.locals.user.id;
+    const { taskId } = req.params;
+
+    try {
+        const requestor = await db.query.member.findFirst({
+            where: eq(member.userId, userId),
+        });
+
+        if (!requestor) return res.status(403).json({ error: "No eres miembro de una familia" });
+
+        if (requestor.role !== "PARENT") {
+            return res.status(403).json({ error: "Solo los padres pueden eliminar tareas" });
+        }
+
+        const taskToDelete = await db.query.task.findFirst({
+            where: and(
+                eq(task.id, taskId),
+                eq(task.familyId, requestor.familyId)
+            ),
+        });
+
+        if (!taskToDelete) {
+            return res.status(404).json({ error: "Tarea no encontrada o no tienes permisos" });
+        }
+
+        await db.delete(task).where(eq(task.id, taskId));
+
+        res.json({ success: true, message: "Tarea eliminada correctamente" });
+
+    } catch (error) {
+        console.error("Error en deleteTask:", error);
+        res.status(500).json({ error: "Error deleting task" });
+    }
+};
