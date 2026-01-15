@@ -1,6 +1,7 @@
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { AlertCircle, Check, X, ChartPie } from "lucide-react";
 import { authClient } from "../../lib/auth-client";
 import { UserAvatar } from "../../components/UserAvatar";
+import { ActionButton } from "../../components/ui/ActionButton";
 import { Navigate } from "react-router";
 
 export const ParentHome = () => {
@@ -19,74 +20,129 @@ export const ParentHome = () => {
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-
-      <div className="flex items-start gap-3">
-        <UserAvatar
-          name={session.user?.name}
-          className="size-10 md:size-12 border-2 border-gray-100 mb-3"
-        />
-        <div>
-          <h1 className="text-2xl font-black tracking-tight">Hola, {session.user?.name}</h1>
-          <p className="text-muted-foreground font-medium text-sm">
-            Resumen de hoy en casa.
-          </p>
-        </div>
-      </div>
-
+    <div className="space-y-8 animate-in fade-in duration-500 pb-10">
+      
       <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-bold flex items-center gap-2">
-            <AlertCircle className="w-5 h-5 text-amber-500" />
+        <div className="flex items-center justify-between mb-4 px-1">
+          <h2 className="text-lg font-bold flex items-center gap-2 text-foreground">
+            <div className="bg-amber-100 p-1.5 rounded-lg text-amber-600">
+              <AlertCircle className="w-5 h-5" />
+            </div>
             Por revisar
           </h2>
-          <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded-full">
-            {pendingReviews.length}
-          </span>
+          {pendingReviews.length > 0 && (
+            <span className="bg-amber-100 text-amber-700 text-xs font-black px-2.5 py-1 rounded-full border border-amber-200">
+              {pendingReviews.length} pendientes
+            </span>
+          )}
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {pendingReviews.map((task) => (
             <div
               key={task.id}
-              className="bg-surface p-4 rounded-2xl border border-border shadow-sm flex justify-between items-center"
+              className="bg-surface p-5 rounded-3xl border border-border shadow-sm flex flex-col gap-4"
             >
-              <div>
-                <p className="font-bold text-foreground">{task.title}</p>
-                <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                  Hecho por <span className="text-primary">{task.child}</span>
-                </p>
+              {/* Header de la tarjeta */}
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-3">
+                  <UserAvatar
+                    name={task.child}
+                    className="size-10 border border-gray-100"
+                  />
+                  <div>
+                    <p className="font-bold text-lg leading-none text-foreground">
+                      {task.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground font-semibold mt-1.5">
+                      Hecho por{" "}
+                      <span className="text-primary font-bold">
+                        {task.child}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Badge de Puntos */}
+                <div className="bg-surface border-2 border-primary/10 px-3 py-1.5 rounded-xl flex flex-col items-center min-w-15">
+                  <span className="text-lg font-black text-primary leading-none">
+                    +{task.points}
+                  </span>
+                  <span className="text-[9px] font-bold text-muted-foreground uppercase">
+                    Pts
+                  </span>
+                </div>
               </div>
-              <button className="bg-primary/10 text-primary p-2 rounded-xl hover:bg-primary/20 transition-colors">
-                <CheckCircle2 className="w-6 h-6" />
-              </button>
+
+              <div className="h-px bg-border w-full" />
+
+              <div className="grid grid-cols-2 gap-3">
+                <ActionButton
+                  variant="primary"
+                  icon={<X className="w-5 h-5" />}
+                  onClick={() => console.log("Rechazar")}
+                >
+                  Corregir
+                </ActionButton>
+
+                <ActionButton
+                  variant="success"
+                  icon={<Check className="w-5 h-5" />}
+                  onClick={() => console.log("Aprobar")}
+                >
+                  Aprobar
+                </ActionButton>
+              </div>
             </div>
           ))}
+
           {pendingReviews.length === 0 && (
-            <div className="text-center py-6 text-muted-foreground text-sm bg-surface/50 rounded-2xl border border-dashed border-border">
-              ¡Todo al día! No hay tareas pendientes.
+            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground bg-surface/50 rounded-3xl border-2 border-dashed border-border/60">
+              <Check className="w-10 h-10 text-muted-foreground/30 mb-2" />
+              <p className="font-medium">¡Todo al día!</p>
+              <p className="text-xs opacity-70">No hay tareas pendientes.</p>
             </div>
           )}
         </div>
       </section>
 
+      {/* BALANCE */}
       <section>
-        <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
-          💰 Balance Familiar
-        </h2>
+        <div className="flex items-center gap-2 mb-4 px-1">
+          <div className="bg-indigo-100 p-1.5 rounded-lg text-indigo-600">
+            <ChartPie className="w-5 h-5" />
+          </div>
+          <h2 className="text-lg font-bold text-foreground">
+            Balance Familiar
+          </h2>
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           {familyBalance.map((child) => (
             <div
               key={child.id}
-              className="bg-surface p-4 rounded-3xl border border-border flex flex-col items-center text-center shadow-sm"
+              className="bg-surface p-4 rounded-3xl border border-border flex flex-col items-center text-center shadow-sm relative overflow-hidden group"
             >
-              <div className="text-3xl mb-2 grayscale-0">{child.avatar}</div>
-              <div className="font-bold text-foreground">{child.name}</div>
-              <div className="text-2xl font-black text-primary mt-1">
-                {child.points}
+              <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+
+              <div className="mb-3 relative">
+                <UserAvatar
+                  name={child.name}
+                  className="size-14 border-4 border-white shadow-sm"
+                />
               </div>
-              <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                Puntos
+
+              <div className="font-bold text-foreground text-lg">
+                {child.name}
+              </div>
+
+              <div className="flex items-baseline gap-1 mt-1">
+                <div className="text-2xl font-black text-primary">
+                  {child.points}
+                </div>
+                <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                  PTS
+                </div>
               </div>
             </div>
           ))}
