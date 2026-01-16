@@ -1,10 +1,11 @@
-import { LogOut, Moon, Sun } from "lucide-react";
+import { Copy, LogOut, Moon, Sun, Users } from "lucide-react";
 import { authClient } from "../../lib/auth-client";
 import { UserAvatar } from "../../components/UserAvatar";
 import { useTheme } from "../../context/theme-context";
 import { signOut } from "../../lib/auth-client";
 import { useNavigate } from "react-router";
 import { useMyFamily } from "../../hooks/useMyFamily";
+import { toast } from "sonner";
 
 export const TopNav = () => {
   const { data: familyData } = useMyFamily();
@@ -19,6 +20,16 @@ export const TopNav = () => {
   const handleLogout = async () => {
     await signOut();
     navigate("/login");
+  };
+
+  const copyInviteCode = () => {
+    if (familyData?.family?.inviteCode) {
+      navigator.clipboard.writeText(familyData.family.inviteCode);
+      toast.success("Código copiado al portapapeles", {
+        description: "Compártelo con tu familia para que se unan.",
+        icon: <Users className="size-4" />,
+      });
+    }
   };
 
   return (
@@ -36,6 +47,17 @@ export const TopNav = () => {
           <p className="text-muted-foreground font-bold text-xs uppercase tracking-wider">
             {roleLabel}
           </p>
+          {/* CÓDIGO DE FAMILIA (Solo visible para Padres) */}
+          {familyData?.family?.inviteCode && roleLabel === "Admin" && (
+            <button
+              onClick={copyInviteCode}
+              className="flex items-center gap-1 bg-primary/10 hover:bg-primary/20 text-primary px-1.5 py-0.5 rounded text-[10px] font-bold transition-colors cursor-pointer"
+              title="Copiar código de familia"
+            >
+              {familyData.family.inviteCode}
+              <Copy className="size-2.5" />
+            </button>
+          )}
         </div>
       </div>
 

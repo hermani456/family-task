@@ -7,18 +7,12 @@ interface TaskCardProps {
     title: string;
     points: number;
     createdAt: Date | string;
-    assignedTo?: { name: string } | null;
+    assignedToName?: string | null;
   };
   onDelete: (id: string) => void;
 }
 
 export const TaskCard = ({ task, onDelete }: TaskCardProps) => {
-  const dateStr = new Date(task.createdAt).toLocaleDateString("es-ES", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-  });
-
   return (
     <div className="bg-surface p-4 rounded-2xl border border-border shadow-sm flex flex-col gap-3 transition-all hover:shadow-md active:scale-[0.99]">
       
@@ -37,12 +31,12 @@ export const TaskCard = ({ task, onDelete }: TaskCardProps) => {
         
         {/* Asignación */}
         <div className="flex items-center gap-2">
-          {task.assignedTo ? (
+          {task.assignedToName ? (
             // Asignado a alguien específico
             <>
-              <UserAvatar name={task.assignedTo.name} className="size-6 border border-border" />
+              <UserAvatar name={task.assignedToName} className="size-6 border border-border" />
               <span className="text-xs font-semibold text-muted-foreground">
-                {task.assignedTo.name.split(" ")[0]}
+                {task.assignedToName.split(" ")[0]}
               </span>
             </>
           ) : (
@@ -62,7 +56,7 @@ export const TaskCard = ({ task, onDelete }: TaskCardProps) => {
         <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-medium bg-secondary/30 px-2 py-1 rounded-md">
                 <Calendar className="size-3" />
-                {dateStr}
+                04/05/06
             </div>
             
             {/* Botón Borrar */}
