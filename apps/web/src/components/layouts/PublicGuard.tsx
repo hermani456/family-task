@@ -10,11 +10,11 @@ export const PublicGuard = () => {
     data: familyData,
     isLoading: isFamilyLoading,
     isFetching,
-    isError,
+
   } = useMyFamily();
 
   const isWaitingForFamily =
-    session && (isFamilyLoading || isFetching || (!familyData && !isError));
+    session && (isFamilyLoading || isFetching);
 
   if (isSessionPending || isWaitingForFamily) {
     return (

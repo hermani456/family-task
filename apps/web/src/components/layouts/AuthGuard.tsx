@@ -6,14 +6,13 @@ import { Loader2 } from "lucide-react";
 export const AuthGuard = () => {
   const { data: session, isPending: isSessionPending } =
     authClient.useSession();
-  const { data: familyData, isError, isLoading } = useMyFamily();
+  const { data: familyData, isLoading } = useMyFamily();
 
   const location = useLocation();
 
   const showSpinner =
     isSessionPending ||
-    (session && isLoading) ||
-    (session && !familyData && !isError);
+    (session && isLoading);
 
   if (showSpinner) {
     return (

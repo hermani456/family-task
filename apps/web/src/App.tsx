@@ -1,10 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router"; // O 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { ThemeProvider } from "./components/theme-provider";
 import { AuthGuard } from "./components/layouts/AuthGuard";
 import { PublicGuard } from "./components/layouts/PublicGuard";
 import { DashboardLayout } from "./components/layouts/DashboardLayout";
 
-// Imports de tus páginas (Asegúrate de tener estos componentes o créalos vacíos por ahora)
 import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
