@@ -5,6 +5,7 @@ export interface FamilyMember {
     name: string;
     role: "PARENT" | "CHILD";
     avatar: string | null;
+    balance: number;
 }
 
 export const useMembers = () => {

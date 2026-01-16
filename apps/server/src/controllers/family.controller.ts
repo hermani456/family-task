@@ -90,7 +90,8 @@ export const getFamilyMembers = async (req: Request, res: Response) => {
                 userId: member.userId,
                 name: user.name,
                 role: member.role,
-                avatar: user.image
+                avatar: user.image,
+                balance: member.balance
             })
             .from(member)
             .innerJoin(user, eq(member.userId, user.id))
