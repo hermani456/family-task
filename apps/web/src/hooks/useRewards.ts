@@ -43,3 +43,23 @@ export const useRewards = () => {
 
     return { ...query, createMutation, redeemMutation };
 };
+
+export const useDeleteReward = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (rewardId: string) => {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rewards/${rewardId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (!res.ok) {
+                throw new Error("Error al eliminar el premio");
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["rewards"] });
+        },
+    });
+};

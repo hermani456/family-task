@@ -1,5 +1,24 @@
-import { Calendar, Trash2, Users } from "lucide-react";
+import {
+  Bed,
+  BookOpen,
+  Gamepad2,
+  ListTodo,
+  Trash2,
+  Users,
+  Coins,
+} from "lucide-react";
 import { UserAvatar } from "../../../components/UserAvatar";
+
+const getTaskIcon = (title: string) => {
+  const t = title.toLowerCase();
+  if (t.includes("cama") || t.includes("ordenar") || t.includes("limpiar"))
+    return <Bed className="size-6" />;
+  if (t.includes("leer") || t.includes("estudiar") || t.includes("tarea"))
+    return <BookOpen className="size-6" />;
+  if (t.includes("perro") || t.includes("mascota") || t.includes("jugar"))
+    return <Gamepad2 className="size-6" />;
+  return <ListTodo className="size-6" />;
+};
 
 interface TaskCardProps {
   task: {
@@ -14,63 +33,56 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task, onDelete }: TaskCardProps) => {
   return (
-    <div className="bg-surface p-4 rounded-2xl border border-border shadow-sm flex flex-col gap-3 transition-all hover:shadow-md active:scale-[0.99]">
-      
-      {/* Header: Título y Puntos */}
-      <div className="flex justify-between items-start">
-        <h3 className="font-bold text-foreground text-base leading-tight pr-2 line-clamp-2">
-          {task.title}
-        </h3>
-        <span className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-lg text-xs font-black border border-emerald-200 shrink-0 whitespace-nowrap">
-          +{task.points} pts
-        </span>
+    <div className="bg-surface p-4 rounded-3xl border border-border shadow-sm flex items-center gap-4 active:scale-[0.99] transition-all relative overflow-hidden group hover:shadow-md">
+      <div className="size-14 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-600 shrink-0 border border-sky-200">
+        {getTaskIcon(task.title)}
       </div>
+      <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+        {/* titulo */}
+        <div className="flex justify-between items-start">
+          <h3 className="font-bold text-foreground text-base leading-tight truncate pr-2">
+            {task.title}
+          </h3>
+        </div>
 
-      {/* Footer: Asignado a y Fecha */}
-      <div className="flex items-center justify-between mt-1">
-        
-        {/* Asignación */}
-        <div className="flex items-center gap-2">
-          {task.assignedToName ? (
-            // Asignado a alguien específico
-            <>
-              <UserAvatar name={task.assignedToName} className="size-6 border border-border" />
-              <span className="text-xs font-semibold text-muted-foreground">
-                {task.assignedToName.split(" ")[0]}
-              </span>
-            </>
-          ) : (
-            // Asignado a Todos
-            <>
-              <div className="size-6 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 border border-indigo-200">
-                <Users className="size-3.5" />
+        {/* asignado + puntos*/}
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center gap-2">
+            {task.assignedToName ? (
+              <div className="flex items-center gap-1.5 bg-gray-50 pr-2 rounded-full border border-gray-100">
+                <UserAvatar name={task.assignedToName} className="size-5" />
+                <span className="text-[10px] font-bold text-muted-foreground truncate max-w-20">
+                  {task.assignedToName.split(" ")[0]}
+                </span>
               </div>
-              <span className="text-xs font-semibold text-muted-foreground">
-                Todos
-              </span>
-            </>
-          )}
-        </div>
+            ) : (
+              // para todos
+              <div className="flex items-center gap-1.5 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+                <Users className="size-3 text-indigo-500" />
+                <span className="text-[10px] font-bold text-indigo-600">
+                  Todos
+                </span>
+              </div>
+            )}
+          </div>
 
-        {/* Fecha y Acción */}
-        <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-medium bg-secondary/30 px-2 py-1 rounded-md">
-                <Calendar className="size-3" />
-                04/05/06
-            </div>
-            
-            {/* Botón Borrar */}
-            <button 
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(task.id);
-                }}
-                className="text-muted-foreground hover:text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition-colors"
-            >
-                <Trash2 className="size-4" />
-            </button>
+          <div className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg text-xs font-black border border-amber-200 shrink-0 flex items-center gap-1">
+            <Coins className="size-3" />+{task.points}
+          </div>
         </div>
       </div>
+      {/* 3. BOTÓN BORRAR */}
+      <div className="h-10 w-px bg-border mx-1" />
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(task.id);
+        }}
+        className="size-10 flex items-center justify-center rounded-xl text-muted-foreground hover:text-rose-500 hover:bg-rose-50 transition-all active:scale-90"
+        title="Eliminar tarea"
+      >
+        <Trash2 className="size-5" />
+      </button>
     </div>
   );
 };

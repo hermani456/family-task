@@ -99,3 +99,35 @@ export const redeemReward = async (req: Request, res: Response) => {
         res.status(400).json({ error: error.message || "Error redeeming reward" });
     }
 };
+
+export const deleteReward = async (req: Request, res: Response) => {
+    const userId = res.locals.user.id;
+    const { rewardId } = req.params;
+
+    try {
+        const userMember = await db.query.member.findFirst({
+            where: eq(member.userId, userId),
+        });
+
+        if (!userMember || userMember.role !== "PARENT") {
+            return res.status(403).json({ error: "Solo los padres pueden eliminar premios" });
+        }
+
+        const deletedReward = await db.delete(reward)
+            .where(and(
+                eq(reward.id, rewardId),
+                eq(reward.familyId, userMember.familyId)
+            ))
+            .returning();
+
+        if (deletedReward.length === 0) {
+            return res.status(404).json({ error: "Premio no encontrado" });
+        }
+
+        res.json({ success: true, message: "Premio eliminado" });
+
+    } catch (error) {
+        console.error("Error deleting reward:", error);
+        res.status(500).json({ error: "Error deleting reward" });
+    }
+};

@@ -6,7 +6,7 @@ interface UserAvatarProps {
 
 export const UserAvatar = ({
   name,
-  className = "w-10 h-10",
+  className = "size-10",
   size = 64,
 }: UserAvatarProps) => {
   const seed = encodeURIComponent(name);
