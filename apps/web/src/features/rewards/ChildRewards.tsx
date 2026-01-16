@@ -3,14 +3,12 @@ import { toast } from "sonner"; // Usamos Sonner para el feedback
 import { authClient } from "../../lib/auth-client";
 import { useMyFamily } from "../../hooks/useMyFamily";
 
-export const RewardsShopPage = () => {
+export const ChildRewards = () => {
   const { data: session } = authClient.useSession();
   const { data: familyData } = useMyFamily();
 
-  // Obtenemos el saldo real
   const currentBalance = familyData?.member?.balance || 0;
 
-  // Mock Data (Esto vendrá de tu API useRewards)
   const rewards = [
     {
       id: 1,
@@ -50,18 +48,17 @@ export const RewardsShopPage = () => {
   ];
 
   const handleRedeem = (reward: any) => {
-    // Aquí iría la mutación real (useRedeemReward)
     toast.success(`¡Canjeaste "${reward.title}"!`, {
       description: "Avísale a tus padres para recibirlo.",
       icon: "🎉",
       duration: 5000,
     });
-    // Opcional: Lanzar confetti aquí sería un toque maestro
+    // confetti?
   };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-24">
-      {/* HEADER: Billetera Virtual */}
+      {/* HEADER */}
       <div>
         <h1 className="text-2xl font-black tracking-tight text-foreground">
           Tienda de Premios
@@ -71,7 +68,7 @@ export const RewardsShopPage = () => {
         </p>
       </div>
 
-      {/* WALLET CARD (Sticky mental) */}
+      {/* WALLET CARD  */}
       <div className="bg-linear-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden">
         <div className="relative z-10 flex justify-between items-center">
           <div>

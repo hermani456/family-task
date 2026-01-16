@@ -23,7 +23,6 @@ export const ParentHome = () => {
 
   // Miembros que son hijos
   const childrenMembers = members?.filter((m) => m.role === "CHILD") || [];
-  console.log("Children Members:", childrenMembers);
   const isLoading = loadingTasks || loadingMembers;
 
   const handleApprove = (taskId: string, points: number, childName: string) => {
@@ -72,7 +71,7 @@ export const ParentHome = () => {
     });
   };
 
-  // 4. Skeleton Loading (Para evitar saltos visuales)
+  // 4. Skeleton Loading
   if (isLoading) {
     return (
       <div className="space-y-8 pt-4 pb-10 px-1">

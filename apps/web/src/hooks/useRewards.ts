@@ -13,7 +13,7 @@ export const useRewards = () => {
     });
 
     const createMutation = useMutation({
-        mutationFn: async (data: { title: string; cost: number }) => {
+        mutationFn: async (data: { title: string; cost: number, image?: string }) => {
             await fetch(`${import.meta.env.VITE_API_URL}/api/rewards`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

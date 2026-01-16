@@ -10,7 +10,7 @@ import { RegisterPage } from "./pages/auth/RegisterPage";
 import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
 import { TasksPage } from "./features/tasks/TasksPage";
 import { HomePage } from "./pages/HomePage";
-import { RewardsShopPage } from "./features/rewards/RewardsShopPage";
+import { RewardsPage } from "./features/rewards/RewardsPage";
 
 function App() {
   return (
@@ -33,13 +33,11 @@ function App() {
                No lleva 'path', actúa como contenedor visual.
             */}
             <Route element={<DashboardLayout />}>
-              
-              <Route index element={<HomePage />} /> 
-              
+              <Route index element={<HomePage />} />
+
               {/* Rutas hijas: Se renderizan DENTRO del <Outlet/> del Layout */}
               <Route path="tasks" element={<TasksPage />} />
-              <Route path="shop" element={<RewardsShopPage />} />
-              
+              <Route path="shop" element={<RewardsPage />} />
             </Route>
           </Route>
 

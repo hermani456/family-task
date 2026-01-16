@@ -27,7 +27,7 @@ export const getRewards = async (req: Request, res: Response) => {
 
 export const createReward = async (req: Request, res: Response) => {
     const userId = res.locals.user.id;
-    const { title, cost, description } = req.body;
+    const { title, cost, description, image } = req.body;
 
     try {
         const userMember = await db.query.member.findFirst({
@@ -44,6 +44,7 @@ export const createReward = async (req: Request, res: Response) => {
             title,
             cost: Number(cost),
             description: description || "",
+            image: image || "🎁",
         }).returning();
 
         res.json(newReward[0]);

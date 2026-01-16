@@ -15,7 +15,7 @@ export const BottomNav = () => {
   const parentLinks = [
     { to: "/", icon: Home, label: "Inicio" },
     { to: "/tasks", icon: CheckSquare, label: "Tareas" },
-    { to: "/rewards", icon: Gift, label: "Premios" },
+    { to: "/shop", icon: Gift, label: "Premios" },
   ];
 
   // 2. Enlaces para HIJOS
