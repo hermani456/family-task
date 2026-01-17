@@ -23,6 +23,7 @@ RUN pnpm install --frozen-lockfile
 # Build the project
 COPY --from=prune /app/out/full/ .
 COPY turbo.json turbo.json
+COPY tsconfig.json tsconfig.json
 RUN pnpm run build --filter=server
 
 FROM base AS runner

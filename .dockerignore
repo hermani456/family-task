@@ -1,0 +1,7 @@
+node_modules
+.git
+.gitignore
+.env
+.turbo
+dist
+.docker-debug
