@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db/index.js";
-import { member, family, user } from "@family-task/shared";
+import { member, family, user } from "../db/shared/index.js";
 import { eq } from "drizzle-orm";
 
 export const getMyFamily = async (req: Request, res: Response) => {

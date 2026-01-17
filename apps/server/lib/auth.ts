@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "../src/db/index.js"; // your drizzle instance
-import * as schema from "@family-task/shared"
+import * as schema from "../src/db/shared/index.js"
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {

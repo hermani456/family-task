@@ -17,9 +17,6 @@ importers:
 
   apps/server:
     dependencies:
-      '@family-task/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@neondatabase/serverless':
         specifier: ^1.0.2
         version: 1.0.2
