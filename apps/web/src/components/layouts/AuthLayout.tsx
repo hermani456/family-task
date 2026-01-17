@@ -1,4 +1,5 @@
 import { HousePlus } from "lucide-react";
+// @ts-expect-error ViewTransition is not yet in @types/react
 import { ViewTransition } from "react";
 import VTLink from "../Transition";
 
@@ -26,21 +27,19 @@ const AuthLayout = ({ children, mode }: AuthLayoutProps) => {
         <div className="bg-surface border border-border rounded-full p-1.5 flex mb-6 shadow-sm">
           <VTLink
             to="/login"
-            className={`flex-1 text-center py-2 text-sm font-bold rounded-full transition-all duration-200 ${
-              mode === "login"
+            className={`flex-1 text-center py-2 text-sm font-bold rounded-full transition-all duration-200 ${mode === "login"
                 ? "bg-primary text-primary-foreground shadow-md"
                 : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200"
-            }`}
+              }`}
           >
             Ingresar
           </VTLink>
           <VTLink
             to="/register"
-            className={`flex-1 text-center py-2 text-sm font-bold rounded-full transition-all duration-200 ${
-              mode === "register"
+            className={`flex-1 text-center py-2 text-sm font-bold rounded-full transition-all duration-200 ${mode === "register"
                 ? "bg-primary text-primary-foreground shadow-md"
                 : "text-gray-500 hover:text-gray-900 dark:hover:text-gray-200"
-            }`}
+              }`}
           >
             Registrarse
           </VTLink>

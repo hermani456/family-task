@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTasks } from "../hooks/useTasks";
+import { useTasks, useCreateTask, useUpdateTaskStatus } from "../hooks/useTasks";
 import { useMembers } from "../hooks/useMembers";
 import type { TaskWithAssignee } from "@family-task/shared";
 import { UserAvatar } from "./UserAvatar";
@@ -10,12 +10,9 @@ interface TaskListProps {
 }
 
 export const TaskList = ({ userRole, userId }: TaskListProps) => {
-  const {
-    data: tasks,
-    isLoading,
-    createTaskMutation,
-    updateStatusMutation,
-  } = useTasks();
+  const { data: tasks, isLoading } = useTasks();
+  const createTaskMutation = useCreateTask();
+  const updateStatusMutation = useUpdateTaskStatus();
   const { data: members } = useMembers();
 
   const [title, setTitle] = useState("");
@@ -88,11 +85,10 @@ export const TaskList = ({ userRole, userId }: TaskListProps) => {
                   <h4 className="font-medium text-lg">{t.title}</h4>
                   {t.assignedToName && (
                     <div
-                      className={`flex items-center gap-1.5 px-2 py-1 rounded-full border transition-colors ${
-                        isMine
-                          ? "bg-blue-50 border-blue-200"
-                          : "bg-gray-50 border-gray-200"
-                      }`}
+                      className={`flex items-center gap-1.5 px-2 py-1 rounded-full border transition-colors ${isMine
+                        ? "bg-blue-50 border-blue-200"
+                        : "bg-gray-50 border-gray-200"
+                        }`}
                     >
                       <UserAvatar
                         name={t.assignedToName}
@@ -101,9 +97,8 @@ export const TaskList = ({ userRole, userId }: TaskListProps) => {
                       />
 
                       <span
-                        className={`text-xs font-bold ${
-                          isMine ? "text-blue-700" : "text-gray-600"
-                        }`}
+                        className={`text-xs font-bold ${isMine ? "text-blue-700" : "text-gray-600"
+                          }`}
                       >
                         {isMine ? "TÚ" : t.assignedToName}
                       </span>
@@ -111,11 +106,10 @@ export const TaskList = ({ userRole, userId }: TaskListProps) => {
                   )}
                 </div>
                 <span
-                  className={`text-xs font-bold px-2 py-0.5 rounded ${
-                    t.status === "DONE"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
+                  className={`text-xs font-bold px-2 py-0.5 rounded ${t.status === "DONE"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-gray-100 text-gray-600"
+                    }`}
                 >
                   {t.status.replace("_", " ")} ({t.points} pts)
                 </span>

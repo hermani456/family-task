@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+// @ts-expect-error ViewTransition is not yet in @types/react
 import { ViewTransition } from "react";
 
 interface DrawerProps {
@@ -14,7 +15,11 @@ export const Drawer = ({ isOpen, onClose, title, children }: DrawerProps) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
