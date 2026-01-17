@@ -1,0 +1,35 @@
+services:
+  api:
+    image: ghcr.io/hermani456/family-task:latest
+    restart: always
+    environment:
+      - PORT=3000
+    env_file:
+      - .env
+    networks:
+      - internal
+
+  caddy:
+    image: caddy:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./apps/server/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - DOMAIN=${DOMAIN}
+    depends_on:
+      - api
+    networks:
+      - internal
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  internal:
+    driver: bridge
