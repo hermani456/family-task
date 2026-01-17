@@ -1,0 +1,33 @@
+# 1. Dependencias locales (Docker las instalará limpias)
+**/node_modules
+**/.pnpm-store
+
+# 2. Archivos de compilación locales (Docker compilará limpio)
+**/dist
+**/build
+**/out
+**/.next
+**/.turbo
+
+# 3. Control de versiones y configuración de IDE
+.git
+.gitignore
+.vscode
+.idea
+
+# 4. Archivos de entorno y secretos (¡CRÍTICO!)
+.env
+.env.*
+!.env.example
+
+# 5. Logs y archivos temporales
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+
+# 6. Documentación no necesaria en producción
+README.md
+LICENSE

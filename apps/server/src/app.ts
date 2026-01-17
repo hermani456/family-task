@@ -11,7 +11,7 @@ import { getRewards, createReward, redeemReward, deleteReward } from "./controll
 import { getHistory } from "./controllers/transaction.controller";
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 app.use(cors({
     origin: ["http://localhost:5173"],
