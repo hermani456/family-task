@@ -28,6 +28,13 @@ export const LoginPage = () => {
     toast.success(`Bienvenido de nuevo ${session?.user?.name || "usuario"}`);
   };
 
+  const signInWithGoogle = async () => {
+    await signIn.social({
+      provider: "google",
+      callbackURL: window.location.origin,
+    });
+  };
+
   return (
     <AuthLayout mode="login">
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -41,10 +48,9 @@ export const LoginPage = () => {
           <div className="relative group">
             <div
               className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors 
-                ${
-                  errors.email
-                    ? "text-danger"
-                    : "text-muted-foreground group-focus-within:text-primary"
+                ${errors.email
+                  ? "text-danger"
+                  : "text-muted-foreground group-focus-within:text-primary"
                 }`}
             >
               <Mail className="w-5 h-5" />
@@ -56,11 +62,10 @@ export const LoginPage = () => {
               {...register("email")}
               className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground font-medium 
                          placeholder:text-muted-foreground/50 transition-all duration-200 shadow-sm outline-none
-                         ${
-                           errors.email
-                             ? "border-danger focus:ring-2 focus:ring-danger/20"
-                             : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                         }`}
+                         ${errors.email
+                  ? "border-danger focus:ring-2 focus:ring-danger/20"
+                  : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                }`}
             />
           </div>
           {errors.email && (
@@ -80,10 +85,9 @@ export const LoginPage = () => {
           <div className="relative group">
             <div
               className={`absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none transition-colors 
-                ${
-                  errors.password
-                    ? "text-danger"
-                    : "text-muted-foreground group-focus-within:text-primary"
+                ${errors.password
+                  ? "text-danger"
+                  : "text-muted-foreground group-focus-within:text-primary"
                 }`}
             >
               <Lock className="w-5 h-5" />
@@ -95,11 +99,10 @@ export const LoginPage = () => {
               {...register("password")}
               className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground font-medium 
                          placeholder:text-muted-foreground/50 transition-all duration-200 shadow-sm outline-none
-                         ${
-                           errors.password
-                             ? "border-danger focus:ring-2 focus:ring-danger/20"
-                             : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                         }`}
+                         ${errors.password
+                  ? "border-danger focus:ring-2 focus:ring-danger/20"
+                  : "border-border focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                }`}
             />
           </div>
           {errors.password && (
@@ -147,6 +150,7 @@ export const LoginPage = () => {
           </div>
           <div className="grid grid-cols-2 gap-4 mt-3">
             <SocialButton
+              onClick={signInWithGoogle}
               icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
               label="Google"
             />
