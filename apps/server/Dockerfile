@@ -13,7 +13,9 @@ COPY apps/server ./apps/server
 
 RUN pnpm install --frozen-lockfile
 
-RUN pnpm --filter server... build
+RUN pnpm --filter @family-task/shared build
+
+RUN pnpm --filter server build
 
 FROM base AS runner
 WORKDIR /app
