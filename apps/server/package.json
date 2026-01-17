@@ -7,7 +7,9 @@
     "dev": "tsx --watch src/server.ts",
     "build": "tsc",
     "test": "vitest",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "lint": "echo 'no linting for server yet'",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
