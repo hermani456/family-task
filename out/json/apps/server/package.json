@@ -29,7 +29,6 @@
     "vitest": "^4.0.16"
   },
   "dependencies": {
-    "@family-task/shared": "workspace:*",
     "@neondatabase/serverless": "^1.0.2",
     "better-auth": "^1.4.10",
     "bufferutil": "^4.1.0",

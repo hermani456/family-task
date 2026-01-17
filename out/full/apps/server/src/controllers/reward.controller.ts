@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db/index.js";
-import { reward, member, transaction } from "@family-task/shared";
+import { reward, member, transaction } from "../db/shared/index.js";
 import { eq, and, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 

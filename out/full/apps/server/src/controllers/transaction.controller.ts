@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { db } from "../db/index.js";
-import { transaction, member } from "@family-task/shared";
+import { transaction, member } from "../db/shared/index.js";
 import { eq, desc } from "drizzle-orm";
 
 export const getHistory = async (req: Request, res: Response) => {

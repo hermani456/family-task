@@ -13,9 +13,6 @@ importers:
         version: 2.7.3
   apps/server:
     dependencies:
-      '@family-task/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
       '@neondatabase/serverless':
         specifier: ^1.0.2
         version: 1.0.2
@@ -77,14 +74,6 @@ importers:
       vitest:
         specifier: ^4.0.16
         version: 4.0.16(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)
-  packages/shared:
-    devDependencies:
-      drizzle-orm:
-        specifier: 0.45.1
-        version: 0.45.1(@neondatabase/serverless@1.0.2)(@types/pg@8.16.0)(kysely@0.28.9)
-      typescript:
-        specifier: ~5.9.3
-        version: 5.9.3
 packages:
   '@better-auth/core@1.4.10':
     resolution:

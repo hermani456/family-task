@@ -9,11 +9,7 @@
     "noUnusedParameters": false,
     "noEmit": false,
     "allowImportingTsExtensions": false,
-    "paths": {
-      "@family-task/shared": [
-        "./src/db/shared/index.ts"
-      ]
-    }
+    "paths": {}
   },
   "include": [
     "src/**/*"
