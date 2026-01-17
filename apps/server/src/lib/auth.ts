@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "../src/db/index"; // your drizzle instance
+import { db } from "../db"; // your drizzle instance
 import { schema } from "@family-task/shared"
 
 export const auth = betterAuth({
@@ -11,5 +11,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
-    trustedOrigins: ["http://localhost:5173"], 
+    trustedOrigins: [
+        process.env.CLIENT_URL || "http://localhost:5173"
+    ],
 });

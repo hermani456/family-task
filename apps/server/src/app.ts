@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import { toNodeHandler } from "better-auth/node";
-import { auth } from "../lib/auth";
+import { auth } from "./lib/auth";
 import cors from 'cors';
 import { requireAuth } from "./middleware/auth.middleware";
 import { createFamily, joinFamily, getFamilyMembers } from "./controllers/family.controller";
