@@ -1,0 +1,22 @@
+# Dependencias
+node_modules
+.pnpm-store
+
+# Producción y Builds
+dist
+build
+.turbo
+
+# Variables de Entorno (¡VITAL!)
+.env
+.env.local
+.env.*.local
+
+# Logs y Sistema
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+.docker-debug
