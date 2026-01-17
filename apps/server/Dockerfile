@@ -36,4 +36,4 @@ USER expressjs
 
 COPY --from=installer /app .
 
-CMD ["node", "apps/server/dist/server.js"]
+CMD ["node", "apps/server/dist/src/server.js"]
