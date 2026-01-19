@@ -98,22 +98,18 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
                 return res.status(403).json({ error: "Acción no permitida" });
             }
 
-
             if (currentTask.assignedToId && currentTask.assignedToId !== userId) {
                 return res.status(403).json({ error: "Esta tarea pertenece a otro hermano" });
             }
 
+            await db.update(task)
+                .set({
+                    status: status,
+                    assignedToId: userId
+                })
+                .where(eq(task.id, taskId));
 
-            if (status === "IN_PROGRESS") {
-                await db.update(task)
-                    .set({
-                        status: "IN_PROGRESS",
-                        assignedToId: userId
-                    })
-                    .where(eq(task.id, taskId));
-
-                return res.json({ success: true, status: "IN_PROGRESS", assignedTo: userId });
-            }
+            return res.json({ success: true, status: status, assignedTo: userId });
         }
 
 

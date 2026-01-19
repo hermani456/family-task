@@ -97,4 +97,32 @@ describe('PATCH /api/tasks/:taskId/status', () => {
     // Verificamos que se llamó a la base de datos para actualizar
     expect(mocks.spies.updateFn).toHaveBeenCalled();
   });
+
+  it('debería asignar la tarea al HIJO cuando la marca como REVIEW directamente', async () => {
+    const mockHijo1 = { id: 'user-hijo-1' };
+    const mockMemberHijo1 = { userId: 'user-hijo-1', familyId: 'fam-1', role: 'CHILD' };
+
+    const mockTaskLibre = {
+      id: 'task-libre-2',
+      familyId: 'fam-1',
+      assignedToId: null,
+      status: 'PENDING'
+    };
+
+    mocks.mockDb.query.member.findFirst.mockResolvedValue(mockMemberHijo1);
+    mocks.mockDb.query.task.findFirst.mockResolvedValue(mockTaskLibre);
+
+    const res = await request(app)
+      .patch('/api/tasks/task-libre-2/status')
+      .set('x-mock-user', JSON.stringify(mockHijo1))
+      .send({ status: 'REVIEW' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+
+    expect(mocks.spies.setFn).toHaveBeenCalledWith({
+      status: 'REVIEW',
+      assignedToId: 'user-hijo-1'
+    });
+  });
 });
