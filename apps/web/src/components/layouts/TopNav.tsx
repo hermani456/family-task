@@ -33,60 +33,65 @@ export const TopNav = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md px-4 py-4 flex items-center justify-between">
-      {/* IZQUIERDA: Perfil */}
-      <div className="flex items-center gap-3">
-        <UserAvatar
-          name={session.user.name}
-          className="size-12 border border-border shadow-sm"
-        />
-        <div className="leading-tight">
-          <p className="text-xl font-black tracking-tight text-foreground">
-            Hola, {session.user?.name?.split(" ")[0]}
-          </p>
-          <p className="text-muted-foreground font-bold text-xs uppercase tracking-wider">
-            {roleLabel}
-          </p>
-          {/* CÓDIGO DE FAMILIA (Solo visible para Padres) */}
-          {familyData?.family?.inviteCode && roleLabel === "Admin" && (
-            <button
-              onClick={copyInviteCode}
-              className="flex items-center gap-1 bg-primary/10 hover:bg-primary/20 text-primary px-1.5 py-0.5 rounded text-[10px] font-bold transition-colors cursor-pointer"
-              title="Copiar código de familia"
-            >
-              {familyData.family.inviteCode}
-              <Copy className="size-2.5" />
-            </button>
-          )}
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md px-4 py-4 flex flex-col">
+      <div className="flex items-center justify-between">
+        {/* IZQUIERDA: Perfil */}
+        <div className="flex items-center gap-3">
+          <UserAvatar
+            name={session.user.name}
+            className="size-12 border border-border shadow-sm"
+          />
+          <div className="leading-tight">
+            <p className="text-xl font-black tracking-tight text-foreground">
+              Hola, {session.user?.name?.split(" ")[0]}
+            </p>
+            <p className="text-muted-foreground font-bold text-xs uppercase tracking-wider">
+              {roleLabel}
+            </p>
+            {/* CÓDIGO DE FAMILIA (Solo visible para Padres) */}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* 1. TEMA  */}
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="p-2.5 rounded-full text-muted-foreground hover:bg-surface hover:text-foreground transition-all active:scale-95 border border-transparent hover:border-border"
+            title="Cambiar tema"
+          >
+            <span className="sr-only">Cambiar tema</span>
+            {theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : (
+              <Moon className="size-5" />
+            )}
+          </button>
+
+          <div className="h-6 w-px bg-border/60 mx-1" />
+
+          {/* 2. LOGOUT  */}
+          <button
+            onClick={handleLogout}
+            className="p-2.5 rounded-full text-muted-foreground hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-600 transition-all active:scale-95 group"
+            title="Cerrar Sesión"
+          >
+            <LogOut className="size-5 group-hover:-translate-x-0.5 transition-transform" />
+          </button>
         </div>
       </div>
-
-      <div className="flex items-center gap-2">
-        {/* 1. TEMA  */}
-        <button
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          className="p-2.5 rounded-full text-muted-foreground hover:bg-surface hover:text-foreground transition-all active:scale-95 border border-transparent hover:border-border"
-          title="Cambiar tema"
-        >
-          <span className="sr-only">Cambiar tema</span>
-          {theme === "dark" ? (
-            <Sun className="size-5" />
-          ) : (
-            <Moon className="size-5" />
-          )}
-        </button>
-
-        <div className="h-6 w-px bg-border/60 mx-1" />
-
-        {/* 2. LOGOUT  */}
-        <button
-          onClick={handleLogout}
-          className="p-2.5 rounded-full text-muted-foreground hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-600 transition-all active:scale-95 group"
-          title="Cerrar Sesión"
-        >
-          <LogOut className="size-5 group-hover:-translate-x-0.5 transition-transform" />
-        </button>
-      </div>
+      {familyData?.family?.inviteCode && roleLabel === "Admin" && (
+        <div className="flex justify-center items-center">
+          <span className="text-xs text-muted-foreground mr-2">Cópia y comparte tu codigo:</span>
+          <button
+            onClick={copyInviteCode}
+            className="flex items-center justify-center gap-1 bg-primary/10 hover:bg-primary/20 text-primary dark:bg-secondary/10 dark:hover:bg-secondary/20 dark:text-secondary px-1.5 py-1 rounded text-[10px] font-bold transition-colors cursor-pointer"
+            title="Copiar código de familia"
+          >
+            {familyData.family.inviteCode}
+            <Copy className="size-2.5" />
+          </button>
+        </div>
+      )}
     </header>
   );
 };
