@@ -1,33 +1,11 @@
 import { ArrowDownRight, ArrowUpRight, Clock } from "lucide-react";
-
-// Mock Data
-const history = [
-  {
-    id: 1,
-    title: "Hacer la cama",
-    points: 20,
-    type: "EARNED",
-    date: "Hoy, 10:00 AM",
-  },
-  {
-    id: 2,
-    title: "Canje: 1 Hora Videojuegos",
-    points: -100,
-    type: "SPENT",
-    date: "Ayer, 18:30 PM",
-  },
-  {
-    id: 3,
-    title: "Ordenar juguetes",
-    points: 50,
-    type: "EARNED",
-    date: "Ayer, 16:00 PM",
-  },
-];
+import { useHistory } from "../hooks/useHistory";
 
 export const PointsHistory = () => {
+  const { data: history = [] } = useHistory();
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-h-100 overflow-y-auto pr-2 custom-scrollbar">
       {history.map((item) => (
         <div
           key={item.id}
@@ -48,9 +26,12 @@ export const PointsHistory = () => {
               )}
             </div>
             <div>
-              <p className="font-bold text-sm text-foreground">{item.title}</p>
+              <p className="font-bold text-sm text-foreground">
+                {item.description}
+              </p>
               <p className="text-[10px] text-muted-foreground font-medium flex items-center gap-1">
-                <Clock className="size-3" /> {item.date}
+                <Clock className="size-3" />{" "}
+                {new Date(item.createdAt).toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -59,8 +40,8 @@ export const PointsHistory = () => {
               item.type === "EARNED" ? "text-emerald-600" : "text-rose-600"
             }`}
           >
-            {item.points > 0 ? "+" : ""}
-            {item.points}
+            {item.amount > 0 ? "+" : ""}
+            {item.amount}
           </span>
         </div>
       ))}
