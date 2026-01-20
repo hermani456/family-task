@@ -15,7 +15,7 @@ const getTaskIcon = (title: string) => {
     return <Bed className="size-6" />;
   if (t.includes("leer") || t.includes("estudiar") || t.includes("tarea"))
     return <BookOpen className="size-6" />;
-  if (t.includes("perro") || t.includes("mascota") || t.includes("jugar"))
+  if (t.includes("perro") || t.includes("mascota") || t.includes("pasear"))
     return <Gamepad2 className="size-6" />;
   return <ListTodo className="size-6" />;
 };
