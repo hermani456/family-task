@@ -53,7 +53,7 @@ describe('PATCH /api/tasks/:taskId/status', () => {
 
     // Tarea que pertenece al Hijo 1
     const mockTaskDeHijo1 = {
-      id: 'task-1',
+      id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
       familyId: 'fam-1',
       assignedToId: 'user-hijo-1',
       status: 'PENDING'
@@ -64,7 +64,7 @@ describe('PATCH /api/tasks/:taskId/status', () => {
     mocks.mockDb.query.task.findFirst.mockResolvedValue(mockTaskDeHijo1);
 
     const res = await request(app)
-      .patch('/api/tasks/task-1/status')
+      .patch('/api/tasks/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/status')
       .set('x-mock-user', JSON.stringify(mockHijo2))
       .send({ status: 'IN_PROGRESS' });
 
@@ -77,7 +77,7 @@ describe('PATCH /api/tasks/:taskId/status', () => {
     const mockMemberHijo1 = { userId: 'user-hijo-1', familyId: 'fam-1', role: 'CHILD' };
 
     const mockTaskLibre = {
-      id: 'task-libre',
+      id: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed',
       familyId: 'fam-1',
       assignedToId: null, // Libre
       status: 'PENDING'
@@ -87,7 +87,7 @@ describe('PATCH /api/tasks/:taskId/status', () => {
     mocks.mockDb.query.task.findFirst.mockResolvedValue(mockTaskLibre);
 
     const res = await request(app)
-      .patch('/api/tasks/task-libre/status')
+      .patch('/api/tasks/1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed/status')
       .set('x-mock-user', JSON.stringify(mockHijo1))
       .send({ status: 'IN_PROGRESS' });
 
@@ -103,7 +103,7 @@ describe('PATCH /api/tasks/:taskId/status', () => {
     const mockMemberHijo1 = { userId: 'user-hijo-1', familyId: 'fam-1', role: 'CHILD' };
 
     const mockTaskLibre = {
-      id: 'task-libre-2',
+      id: '6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b',
       familyId: 'fam-1',
       assignedToId: null,
       status: 'PENDING'
@@ -113,7 +113,7 @@ describe('PATCH /api/tasks/:taskId/status', () => {
     mocks.mockDb.query.task.findFirst.mockResolvedValue(mockTaskLibre);
 
     const res = await request(app)
-      .patch('/api/tasks/task-libre-2/status')
+      .patch('/api/tasks/6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b/status')
       .set('x-mock-user', JSON.stringify(mockHijo1))
       .send({ status: 'REVIEW' });
 
