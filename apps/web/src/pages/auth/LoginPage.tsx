@@ -148,18 +148,19 @@ export const LoginPage = () => {
 
             <div className="grow border-t border-border"></div>
           </div>
-          <div className="grid grid-cols-2 gap-4 mt-3">
+          <div className="flex mt-3">
             <SocialButton
               onClick={signInWithGoogle}
               icon="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
               label="Google"
+              className="flex-1"
             />
 
-            <SocialButton
+            {/* <SocialButton
               icon="https://raw.githubusercontent.com/devicons/devicon/refs/tags/v2.17.0/icons/apple/apple-original.svg"
               label="Apple"
               isDarkIcon
-            />
+            /> */}
           </div>
         </div>
       </form>
